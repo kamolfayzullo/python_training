@@ -3,7 +3,7 @@ import time
 import requests
 import urllib
 import datetime as dt
-
+from countryCode import country_codes
 
 #bot manzil
 bot_token = '6129894724:AAEZc_cSdJCOJWTnypyPtLgfOPuUXA08IZM'
@@ -13,7 +13,7 @@ base_url = f'https://api.telegram.org/bot{bot_token}/'
 #Knopkalar
 keyboard=[['Valyuta'],['🌦Ob-Havo']]
 keyboard1=[['🇺🇿➡️🇺🇸'],['🇺🇸➡️🇺🇿']]
-keyboard2=[['Qayta Boshlash']]
+keyboard2=[['Ortga']]
 
 
 #build keyboard
@@ -41,6 +41,8 @@ def kurs():
     return kurssoliw
 kursqiymat = float(kurs())
 
+#Ob-Havo
+
 #Yordamchi 
 valyuta=None
 type1 = None
@@ -58,16 +60,68 @@ while True:
                 for update in data["result"]:
                     chatId = update['message']["chat"]["id"]
                     if "text" in update['message']:
-                        malumot = update["message"]["text"]
+                        malumot = update["message"]["text"]              
                         if malumot == "/start":
                             sendMessage (chatId,"Assalomualaykum!😎 \nUshbu BOT yordamida quyidagilarni bilib olasiz \n -Valyuta🤑 Kursi \n -Ob-Havo🌦 ma`lumotlari",build_keyboard(keyboard))                 
+                        elif malumot == 'Ortga':
+                            havo = None
+                            valyuta = None
+                            type1 = None
+                            sendMessage (chatId,"Endi qaysi amal?",build_keyboard(keyboard))    
                         elif malumot == 'Valyuta':
+                            havo = None
                             valyuta="valyuta"
-                             
+                            sendMessage (chatId,"Tanlang! \n '🇺🇿➡️🇺🇸' so`m dollargami? \n '🇺🇸➡️🇺🇿' dollar so`mgami?",build_keyboard(keyboard1))
+                        elif malumot == '🇺🇿➡️🇺🇸':
+                            havo = None
+                            type1 = "uzs"
+                            sendMessage (chatId,"Summa kiriting so`mda")
+                        elif malumot =='🇺🇸➡️🇺🇿':
+                            havo = None
+                            type1 = "suz"
+                            sendMessage (chatId,"Summa kiriting dollarda")
+                        elif valyuta=="valyuta" and type1 == "uzs":
+                            try:
+                                qiymat = float(malumot)
+                                sendMessage(chatId,f"{qiymat} so`m \n {round((qiymat / kursqiymat),2)} dollarga teng",build_keyboard(keyboard2))
+                            except:
+                                sendMessage(chatId,"Xato ma`lumot yubordiz")
+                        elif valyuta=="valyuta" and type1 == "suz":
+                            try:
+                                qiymat = float(malumot)
+                                sendMessage(chatId,f"{qiymat} dollar \n {round((qiymat * kursqiymat),2)} so`mga teng",build_keyboard(keyboard2))
+                            except:
+                                sendMessage(chatId,"Xato ma`lumot yubordiz")            
+                        elif malumot == '🌦Ob-Havo':
+                            havo = "havo"
+                            sendMessage(chatId,"Lokatsiya jo`nating",build_keyboard(keyboard2))
+                        elif malumot != "sdvjnsdkvsdkskhbvdkshbvsdbigsdykassjvnhsdbvhsdvjsdb":
+                            sendMessage(chatId,"So`z yozmang siz bilan gaplashib o`tirishga vaqtim yo`q \n Quyidagilardan birini tanlang!! \n 👇🏼👇🏼👇🏼",build_keyboard(keyboard))
                     elif "voice" in update['message']:
-                        sendMessage (chatId,"voice")
+                        sendMessage (chatId,"Ovozli habarga hozircha javob bera olmayman!!")
                     elif "location" in update['message']:
-                        sendMessage (chatId,"location")
+                        #print (update)
+                        if havo == "havo":
+                            longtude = update['message']['location']['longitude']
+                            latude = update['message']['location']['latitude']
+                            print (longtude,latude)
+                            response=requests.get(f'https://api.openweathermap.org/data/2.5/weather?lat={latude}&lon={longtude}&appid=a6ffc8b3cadf6c0445beba80ac186b62&lang=ru&units=metrics/')
+                            obhavo = response.json()
+                            davlat = str(obhavo["sys"]["country"])
+                            #print (davlat)
+                            for i in country_codes:
+                                if i['code'] == davlat:
+                                    davlatnomi = i["country"]
+                                    #print (davlatnomi)
+                                    sendMessage(chatId,f"Siz {davlatnomi} {obhavo['name']}dasiz \n Harorat {obhavo['main']['temp']} ga teng")
+                                # for i in country_codes:
+                                #     if i == davlat:
+                                #         davlatnomi = i["country"]
+                                #         print (davlatnomi)
+                                        #sendMessage (chatId,f"Siz {davlatnomi} {obhavo['coord']['name']}  ni tanladingiz havo harorati {obhavo['coord']['main']['temp']} ga teng")
+                    elif "voisavasce" != update['message']:
+                        sendMessage (chatId, "Xarhil narsa jo`natmang!!")
+
                     offset = update["update_id"] + 1
         else:
             print("Error in API response:", data["description"])
@@ -77,9 +131,3 @@ while True:
     time.sleep(0.1) 
 
 
-# #"message":{"message_id":1227,
-#         #    "from":{"id":171319245,"is_bot":false,"first_name":"Fayzullo","last_name":"Kamol","username":"kamolfayzullo","language_code":"ru"},
-#         #    "chat":{"id":171319245,"first_name":"Fayzullo","last_name":"Kamol","username":"kamolfayzullo","type":"private"},
-#         #    "date":1691061292,
-#         #    "voice":{"duration":1,"mime_type":"audio/ogg",
-#                                                                                                                                                                                                                                                                                                            "file_id":"AwACAgIAAxkBAAIEy2TLjCwIpI60QZ4nqzkRB8a7egrpAAK1MQACXuZhSrQmJvfDakRQLwQ","file_unique_id":"AgADtTEAAl7mYUo","file_size":30536}}}]}
