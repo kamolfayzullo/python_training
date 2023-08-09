@@ -1,55 +1,20 @@
-import requests 
-import datetime as dt
-import countryCode
-# response=requests.get('https://nbu.uz/uz/exchange-rates/json/')
+import sqlite3
 
-# for i in response.json():
+connection = sqlite3.connect('meters.db')
+cursor = connection.cursor()
 
-#     if i["title"]== 'AQSh dollari':
-#         dollrKursi = i["cb_price"]
-
-
+DATA=cursor.execute('''SELECT ESP FROM METERS''')
+DATA=DATA.fetchall() #fetchall(),fetchone()
+#print(DATA)
+connection.close()
 
 
-# def kurs():
-#     urlbank = requests.get('https://nbu.uz/uz/exchange-rates/json/')
-#     kursmalumot = urlbank.json()
-#     for i in kursmalumot:
-#         if i["title"] == "AQSh dollari":
-#             kurssotiw = i['nbu_cell_price']
-#             kurssoliw = i['nbu_buy_price']
-#     return kurssoliw
-        
-# print (kurs())
-
-
-
-
-
-# def kurs():
-#     urlbank = requests.get('https://nbu.uz/uz/exchange-rates/json/')
-#     kursmalumot = urlbank.json()
-#     for i in kursmalumot:
-#         if i["title"] == "AQSh dollari":
-#             kurssotiw = i['nbu_cell_price']
-#             kurssoliw = i['nbu_buy_price']
-#     return kurssoliw
-        
-# print (kurs())
-
-
-#def handle_updates(updates):
-    # for update in updates["result"]:
-    #     # print(update)
-    #     coordinat = (update['message']['location'])
-longtude =69
-latude =41
-#print (longtude , latude)
-response=requests.get(f'https://api.openweathermap.org/data/2.5/weather?lat={latude}&lon={longtude}&appid=a6ffc8b3cadf6c0445beba80ac186b62&lang=ru&units=metric/json/')
-print  (response.json())
-
-# malumot = format["sys"]["country"]
-# for davlat in countryCode:
-#     if malumot == davlat["code"]:
-#         davlatnomi = davlat["country"]
-#         print (davlatnomi)
+data = DATA
+uniq = set(data)
+#print (uniq)
+for i in uniq:
+    soni=0
+    for m in data:
+        if i==m:
+            soni=soni+1
+    print(i,soni)
