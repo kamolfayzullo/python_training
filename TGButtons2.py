@@ -130,12 +130,12 @@ while True:
 
     time.sleep(0.1) 
 
-    {'update_id': 412296727,
-      'message': {'message_id': 1698, 'from': {'id': 171319245, 'is_bot': False, 'first_name': 'Fayzullo', 'last_name': 'Kamol', 'username': 'kamolfayzullo', 'language_code': 'ru'},
-                   'chat': {'id': 171319245, 'first_name': 'Fayzullo', 'last_name': 'Kamol', 'username': 'kamolfayzullo', 'type': 'private'},
-                     'date': 1691394739,
-                       'forward_from': {'id': 171319245, 'is_bot': False, 'first_name': 'Fayzullo', 'last_name': 'Kamol', 'username': 
-                                        'kamolfayzullo', 
-                                        'language_code': 'ru'}, 
-                                        'forward_date': 1691167586, 
-                                        'location': {'latitude': 46.597528, 'longitude': 9.316791}}}
+    # {'update_id': 412296727,
+    #   'message': {'message_id': 1698, 'from': {'id': 171319245, 'is_bot': False, 'first_name': 'Fayzullo', 'last_name': 'Kamol', 'username': 'kamolfayzullo', 'language_code': 'ru'},
+    #                'chat': {'id': 171319245, 'first_name': 'Fayzullo', 'last_name': 'Kamol', 'username': 'kamolfayzullo', 'type': 'private'},
+    #                  'date': 1691394739,
+    #                    'forward_from': {'id': 171319245, 'is_bot': False, 'first_name': 'Fayzullo', 'last_name': 'Kamol', 'username': 
+    #                                     'kamolfayzullo', 
+    #                                     'language_code': 'ru'}, 
+    #                                     'forward_date': 1691167586, 
+    #                                     'location': {'latitude': 46.597528, 'longitude': 9.316791}}}
