@@ -33,20 +33,20 @@ def build_keyboard(keyboard):
 
 #Knopkalar2
 inbord=[['Konsentrator'],['Hisoblagich']]
-inbord1=[[{'text':'Qoraqalpoq HETK',             'callback_data':'1'},
-        {'text':'Andijon HETK',                  'callback_data':'2'}],
-         [{'text':'Buxoro HETK',                 'callback_data':'3'},
-         {'text':'Jizzax HETK',                  'callback_data':'4'}],
-         [{'text':'Qashqadaryo HETK',            'callback_data':'5'},
-         {'text':'Navoiy HETK',                  'callback_data':'6'}],
-         [{'text':'Namangan HETK',               'callback_data':'7'},
-         {'text':'Samarqand HETK',               'callback_data':'8'}],
-         [{'text':'Surxondaryo HETK',            'callback_data':'9'},
-         {'text':'Sirdaryo HETK',                'callback_data':'10'}],
-         [{'text':'Toshkent HETK',               'callback_data':'11'},
-         {'text':"Farg‘ona HETK",                'callback_data':'12'}],
-         [{'text':'Xorazm HETK',                 'callback_data':'13'},
-         {'text':'Toshkent shahar ETK',          'callback_data':'14'}]]
+inbord1=[[{'text':'Qoraqalpoq HETK',             'callback_data':'35000'},
+        {'text':'Andijon HETK',                  'callback_data':'03000'}],
+         [{'text':'Buxoro HETK',                 'callback_data':'06000'},
+         {'text':'Jizzax HETK',                  'callback_data':'08000'}],
+         [{'text':'Qashqadaryo HETK',            'callback_data':'10000'},
+         {'text':'Navoiy HETK',                  'callback_data':'12000'}],
+         [{'text':'Namangan HETK',               'callback_data':'14000'},
+         {'text':'Samarqand HETK',               'callback_data':'18000'}],
+         [{'text':'Surxondaryo HETK',            'callback_data':'22000'},
+         {'text':'Sirdaryo HETK',                'callback_data':'24000'}],
+         [{'text':'Toshkent HETK',               'callback_data':'27000'},
+         {'text':"Farg‘ona HETK",                'callback_data':'30000'}],
+         [{'text':'Xorazm HETK',                 'callback_data':'33000'},
+         {'text':'Toshkent shahar ETK',          'callback_data':'26000'}]]
 
 #ikkinchi turdagi keyboard
 def inline_keyboard(inbord):
@@ -61,7 +61,41 @@ def sendMessage(chatId,text,reply_markup=None):
     requests.get(messageUrl)
 
 
-#database bn aloqa__________________________
+
+
+#database bn aloqa region aniqlaw un__________________________
+dbname = "reestr"
+user = "fayzullo"
+password = "fayzullo"
+host = "192.168.14.74"
+port = "5432"
+
+def region(regioncode):
+    cursor=None
+    conn=None
+    data=None
+    try:
+        conn = psycopg2.connect(
+            dbname=dbname,
+            user=user,
+            password=password,
+            host=host,
+            port=port
+        )
+        cursor = conn.cursor()
+        sql_commanda="select distinct  esp , espcode  from output1_csv where ptes_code  Ilike  %s;"
+        cursor.execute(sql_commanda,(regioncode,))
+        data = list(cursor.fetchall())
+    except psycopg2.Error as e:
+        print(f"Error: {e}")
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+    return data
+
+#database bn aloqa dcu topiw un__________________________
 dbname = "reestr"
 user = "fayzullo"
 password = "fayzullo"
@@ -93,6 +127,9 @@ def dcu_info(dcu_number):
             conn.close()
     return data
 
+
+
+#Kelgan smsni obrobotka
 while True:
     response = requests.get(base_url + f"getUpdates?offset={offset}")
     if response.ok:
@@ -100,7 +137,7 @@ while True:
         if data["ok"]:
             if data["result"]:
                 for update in data["result"]:
-                    print (update)
+                    #print (update)
                     if 'message' in update:
                         chatId = update['message']["chat"]["id"]
                         # print('oddiy sms')
@@ -110,9 +147,13 @@ while True:
                             malumot1 = update["message"]["text"] 
                             sendMessage(chatId,"sz oddiy suz yubordiz")
                     elif 'callback_query' in update:
-                        print('knopka') 
+                        #print('knopka') 
                         chatId =update['callback_query']['message']["chat"]["id"]
-                        sendMessage(chatId,"Siz knopka bosdiz")
+                        callbackdata = update['callback_query']['data']
+                        a = region(str(callbackdata))
+                        for q in a:
+
+                            sendMessage(chatId,q)
                         sendMessage(chatId,"Qaysi hudud",inline_keyboard(inbord1))
                     offset = update["update_id"] + 1
         else:
@@ -146,7 +187,8 @@ while True:
     #                                                                            [{'text': '4', 'callback_data': 'tort'},
     #                                                                              {'text': '5', 'callback_data': 'besh'},
     #                                                                                {'text': '6', 'callback_data': 'olti'}]]}}, 
-    #                                                                                'chat_instance': '5323233157514262773', 'data': 'olti'}}
+    #                                                                                'chat_instance': '5323233157514262773',
+    #                                                                                  'data': 'olti'}}
 
 
     
