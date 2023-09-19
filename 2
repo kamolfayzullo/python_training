@@ -1,32 +1,53 @@
-'119201031734',
-'119201031733',
-'119201031731',
-'119201024578',
-'029190002474',
-'029190001657',
-'129205036140',
-'129205039088',
-'129215037814',
-'119201021091',
-'119201021489',
-'129205038637',
-'129205039090',
-'129205038571',
-'119201014448',
-'119201028503',
-'129195003480',
-'129195004360',
-'129215037955',
-'129185002675',
-'129185002131',
-'129195004369',
-'129185002070',
-'129195004558',
-'129185001923',
-'129195004574',
-'129185001466',
-'129205002230',
-'129205038800',
-'129205038773',
-'129195003992',
-'119201029065',
+import time
+import sqlite3
+import requests
+import json
+
+bot='6546508751:AAGW8bjV545JitadUTUvJkPm0hr_1S3qBtY'
+adress=f'https://api.telegram.org/bot{bot}/'
+
+keyboard=[['Konsentrator'],['Hisoblagich']]
+keybor1=[[{    'text':'1','callback_data':'bir'},{'text':'2','callback_data':'ikki'}],
+         [{    'text':'4','callback_data':'tort'},{'text':'5', 'callback_data':'besh'}],]
+
+def inline_keyboard(keyboard):
+    reply_markup={'inline_keyboard':keyboard}
+    return json.dumps(reply_markup)
+    
+
+def build_keyboard(keyboard):
+    reply_markup={'keyboard':keyboard,'one_time_keyboard':True,'resize_keyboard':True,'input_field_placeholder':'Quyidagilardan birini tanlang'}
+    return json.dumps(reply_markup)
+
+
+def sendmessage(chatid,text,reply_markup=None):
+    texturl=adress+f'sendMessage?chat_id={chatid}&text={text}'
+    if reply_markup:
+        texturl=texturl+'&reply_markup={}'.format(reply_markup)
+    requests.get(texturl)
+
+
+offset=None
+while True:
+    response=requests.get(adress+f'getUpdates?offset={offset}')
+    if response.ok:
+        data=response.json()
+        if data['ok']:
+            if data['result']:
+                for update in data['result']:
+                    if 'message' in update:
+                        chatid=update['message']['chat']['id']
+                        if 'text' in update['message']:
+                            text=update['message']['text']
+                            sendmessage(chatid,'lalaku',inline_keyboard(keybor1))
+                        
+                    elif 'callback_query' in update:
+                        chatid=update['callback_query']['message']['chat']['id']
+                        data=update['callback_query']['data']
+                        print(data)
+                        sendmessage(chatid,'knopka bosding')
+                        
+                        
+                        
+                offset=update['update_id']+1       
+    time.sleep(0.001)
