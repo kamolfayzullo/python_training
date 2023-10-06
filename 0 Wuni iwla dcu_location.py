@@ -32,7 +32,7 @@ def build_keyboard(keyboard):
     return json.dumps(reply_markup) #wuni sal chunmadm
 
 #Knopkalar2
-inbord=[['Konsentrator'],['Hisoblagich']]
+inbord2=[[{'text':'Konsentrator' ,   'callback_data':'DCU'},{'text':'Xisoblagich' ,   'callback_data':'METER'}]]
 inbord1=[[{'text':'Qoraqalpoq HETK',             'callback_data':'35000'},
         {'text':'Andijon HETK',                  'callback_data':'03000'}],
          [{'text':'Buxoro HETK',                 'callback_data':'06000'},
@@ -95,6 +95,39 @@ def region(regioncode):
             conn.close()
     return data
 
+
+#database bn aloqa tuman aniqlaw un__________________________
+dbname = "reestr"
+user = "fayzullo"
+password = "fayzullo"
+host = "192.168.14.74"
+port = "5432"
+
+def esp(espcode):
+    cursor=None
+    conn=None
+    data=None
+    try:
+        conn = psycopg2.connect(
+            dbname=dbname,
+            user=user,
+            password=password,
+            host=host,
+            port=port
+        )
+        cursor = conn.cursor()
+        sql_commanda="select esp , esp_code  from cas_area where esp_code  ilike %s;"
+        cursor.execute(sql_commanda,(espcode,))
+        data = list(cursor.fetchall())
+    except psycopg2.Error as e:
+        print(f"Error: {e}")
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+    return data
+
 #database bn aloqa dcu topiw un__________________________
 dbname = "reestr"
 user = "fayzullo"
@@ -115,7 +148,7 @@ def dcu_info(dcu_number):
             port=port
         )
         cursor = conn.cursor()
-        sql_commanda="select * from dcu_location dl  where dev_no =%s"
+        sql_commanda="select * from output1_csv where dev_no =%s"
         cursor.execute(sql_commanda,(dcu_number,))
         data = list(cursor.fetchone())
     except psycopg2.Error as e:
@@ -140,27 +173,38 @@ while True:
                     #print (update)
                     if 'message' in update:
                         chatId = update['message']["chat"]["id"]
-                        # print('oddiy sms')
-                        # print (update['message']["text"])
+                        if "text" in update['message']:
+                            print(update)
+                            sendMessage(chatId,"Bot ga hush kelibsiz!! \n Ushbu bot yordamida siz konsentratorlarni lokatsiyasi haqida ma`lumot olishingiz mumkin \n Buning uchun siz o`zingiga kerak bo`lgan qurilmani tanlang tanlang")
+                            sendMessage(chatId,"Qaysi qurilma haqida ma`lumot qidiramiz?",inline_keyboard(inbord2))
+                            # print (update['message']["text"])
                         if 'text' in update['message']:
                             #print ("tugri1")
                             malumot1 = update["message"]["text"] 
-                            sendMessage(chatId,"sz oddiy suz yubordiz")
+                            #sendMessage(chatId,"sz oddiy suz yubordiz")
+                    elif 'callback_query' in update:
+                        #print('knopka') 
+                        chatId =update['callback_query']['message']["chat"]["id"]
+                        callbackdata = update['callback_query']['data']
+                        if "DCU" in update['callback_query']['data']:
+                            sendMessage(chatId,"O`zingizga kerakli bo`lgan hududni tanlang DCU",inline_keyboard(inbord1))      
+                        elif "METER" in update['callback_query']['data']:
+                            sendMessage(chatId,"Xozircha Xisoblagichlar haqida ma`lumot yubora olmaymiz")          
                     elif 'callback_query' in update:
                         #print('knopka') 
                         chatId =update['callback_query']['message']["chat"]["id"]
                         callbackdata = update['callback_query']['data']
                         a = region(str(callbackdata))
+                        sending_text='Katta Xolamn rayonlari \n'
                         for q in a:
-
-                            sendMessage(chatId,q)
+                            sending_text=sending_text+q[0]+' - '+q[1]+'\n'
+                        sendMessage(chatId,sending_text)
                         sendMessage(chatId,"Qaysi hudud",inline_keyboard(inbord1))
                     offset = update["update_id"] + 1
         else:
             print("Error in API response:", data["description"])
     else:
         print("Failed to make the API request.")
-
     time.sleep(0.1) 
 # #keladigan oddiy sms    
         #       if "text" in update['message']:
@@ -215,3 +259,10 @@ while True:
 #                    '',                 #phone_no
 #                      '']               #account_id
 
+##{'update_id': 412296856
+# , 'message': {'message_id': 1948,
+# 'from': {'id': 171319245, 'is_bot': False, 
+# 'first_name': 'Fayzullo', 
+# 'last_name': 'Kamol', 'username': 'kamolfayzullo',
+# 'language_code': 'ru'}, 'chat': {'id': 171319245, 'first_name': 'Fayzullo', 'last_name': 'Kamol', 'username': 'kamolfayzullo', 'type': 'private'}, 
+# 'date': 1696524005, 'text': '123'}}
