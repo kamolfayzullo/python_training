@@ -11,3 +11,4 @@ def getLatLon():
 lat,lon=getLatLon()
 print('lat:',lat)
 print('lon:',lon)
+

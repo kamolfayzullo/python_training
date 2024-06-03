@@ -1,13 +1,27 @@
-# import math as fayzullo
+import math as fayzullo
 
-# yosh = input ("tug`ilgan yilingizni kiriting ") 
-# print ('Sizning yoshingiz :'+str(2023-int(yosh)))
+yosh = input ("tug`ilgan yilingizni kiriting ") 
+print ('Sizning yoshingiz :'+str(2023-int(yosh)))
 
 
 
-# son_1 = input ("1-sonni kiriting ")
-# son_2 = input ("2-sonni kiriting ")
-# print ("natija " + str(int(son_1) + int(son_2)))
+son_1 = input ("Birinchi sonni kiriting ")
+son_2 = input ("Ikkinchi kiriting ")
+
+a = int(son_1) * int(son_2)
+if a > 1000:
+    b = int(son_1) + int(son_2)
+    print (str(b))
+else:
+    b = int(son_1) * int(son_2)
+    print (b)
+    1
+    
+
+    
+#______________________________________________________________________
+
+
 
 # ism = input ("Ismingizni kiriting :") 
 # familiya = input ("Familiyasini kiriting :") 
@@ -658,57 +672,35 @@
 #       son = son + 1
 
 
-#________________________________________________________________________#
+#____________________waxmat kvadratini aniqlaw____________________________________________________#
 
+# while True:
+#     try:
+#         a = input ('Harf kiriting: (a dan h gacha) ')
+#         a = a.lower()
+#         harflar = {'a','b','c','d','e','f','g','h'}
+#         if a in harflar:
+#             break    
+#     except ValueError:
+#         print ('sz hato harf kirtdiz qaytadan kiriting')
 
+# harf = {'a':1,'b':2,'c':3,'d':4,'e':5,'f':6,'g':7,'h':8,}
+# a = harf[(str(a))]
 
-
-
-
-
-
-
-
-
-
-
-
-
- 
-#print (str(i))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# while True:
+#     try:
+#         b = input ("Raqam kiriting: 1-8 gacha ")
+#         raqamlar = {'1','2','3','4','5','6','7','8',}
+#         if b in raqamlar:
+#             break    
+#     except ValueError:
+#         print ('sz hato raqam kirtdiz qaytadan kiriting')
+        
+# b = int(b)
+# num = (a + b) / 2
+# if num.is_integer():
+#     print("Bu qora kvadrat")
+# else:
+#     print("Bu oq kavadrat")
 
 

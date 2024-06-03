@@ -1,61 +1,45 @@
-a='Nuriddin '+'26'+'\n' + 'Fayzullo'
-a
 
 
-'EX-165098',
-'EX-176467',
-'EX-158737',
-'EX-170887',
-'EX-173713',
-'EX-174249',
-'EX-178187',
-'EX-2597766',
-'EX-3386694',
-'EX-3434893',
-'EX-3386693',
-'EX-3386701',
-'EX-3387161',
-'EX-3432464',
-'EX-3382630',
-'EX-3383839',
-'EX-3431352',
-'EX-3567070',
-'EX-2873098',
-'EX-3007941',
-'EX-2746421',
-'EX-3448064',
-'EX-3396381',
-'EX-2680065',
-'EX-3444022',
-'EX-3141615',
-'EX-2864969',
-'EX-3013498',
-'EX-3128322',
-'EX-2998470',
-'EX-3148960',
-'EX-3142077',
-'EX-3442606',
-'EX-2871028',
-'EX-3062126',
-'EX-2843938',
-'EX-2999085',
-'EX-3128754',
-'EX-3442960',
-'EX-2910220',
-'EX-3379776',
-'EX-3434868',
-'EX-3566583',
-'EX-3567615',
-'EX-3569857',
-'EX-3569865',
-'EX-3578935',
-'EX-3428578',
-'123200491836',
-'123200402162',
-'121206532342',
-'123200479459',
-'123200479460',
-'123200319407',
-'123200402163',
-'121205946706',
-'121206613681',
+
+
+
+#EX
+
+meter1= '123200456123'
+meter2= 'EX-123456'
+meter3= 'EX-2453145'
+meter4= '121200456123'
+
+def is_numeric(input_str):
+    return input_str.isdigit()
+
+
+
+
+def is_askue(meter):
+    if len(meter) == 9 and meter.startswith('EX-1'):
+        if is_numeric(meter[-6:]):
+            return 1
+    elif len(meter) == 10 and meter.startswith('EX-2'):
+        if is_numeric(meter[-7:]):
+            return 1
+    elif len(meter) == 12 and is_numeric(meter[-12:]):
+        if meter[:2] == '20' and meter[2:4] in ('15', '16', '17', '18', '19', '20', '21', '22'):
+            return 1
+        elif meter[:2] == '11' and meter[2:3] in ('1', '3', '4', '5'):
+            return 1
+        elif meter[:2] == '02' and meter[2:3] in ('1', '3', '4'):
+            return 1
+        elif meter[:2] == '12' and meter[2:3] in ('1', '3', '4'):
+            return 1
+        else:
+            return 0
+    else:
+        return 0
+    
+    
+a = is_askue(meter2)
+print (a)
+
+
+    

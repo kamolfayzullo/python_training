@@ -1303,7 +1303,7 @@ pul = [{"id":1,"email":"ngraveston0@lulu.com","country":"Nigeria","first_name":"
 
 #________________________________________________________________________#
 # Dictionary
-# Data ichidan kerakli ma`lumotni sanash`
+#Data ichidan kerakli ma`lumotni sanash`
 # ayol = 0
 # erkak = 0
 
@@ -1311,9 +1311,7 @@ pul = [{"id":1,"email":"ngraveston0@lulu.com","country":"Nigeria","first_name":"
 #     #print (i["gender"])
 #     if (i["gender"]) == "Female":
 #         ayol = ayol + 1
-#     else:
-#         pass
-#     if (i["gender"]) == "Male":
+#     elif (i["gender"]) == "Male":
 #      erkak = erkak + 1
 #     else:
 #        pass
