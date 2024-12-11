@@ -144,7 +144,7 @@
 #3333333333333333333
 
 
-meter = "112001123456"
+meter = "11200112346"
 
 def is_numeric(input_str):
     return input_str.isdigit()
